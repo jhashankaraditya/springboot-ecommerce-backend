@@ -10,6 +10,8 @@ import com.example.ecommerce.repository.CartItemRepository;
 import com.example.ecommerce.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CartService {
     private final ProductRepository productRepository;
@@ -44,5 +46,53 @@ public class CartService {
         cartItemDTO.setTotalPrice(cartItem.getQuantity() * product.getPrice());
 
         return cartItemDTO;
+    }
+
+    public List<CartItemDTO> getCart(User user) {
+        List<CartItem> items = cartItemRepository.findByUser(user);
+
+        return items.stream().map(this::toDTO).toList();
+    }
+
+    private CartItemDTO toDTO(CartItem item) {
+        double price = item.getProduct().getPrice();
+        int quantity = item.getQuantity();
+
+        return new CartItemDTO(
+                item.getId(),
+                item.getProduct().getId(),
+                item.getProduct().getName(),
+                quantity,
+                price,
+                price*quantity
+        );
+    }
+
+    public CartItemDTO updateCart(Long id, int quantity, User user) {
+        CartItem item = cartItemRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Cart not found..."));
+
+        if (!item.getUser().getUserId().equals(user.getUserId())) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+        item.setQuantity(item.getQuantity() + quantity);
+
+        return toDTO(cartItemRepository.save(item));
+    }
+
+    public void deleteItem(Long id, User user) {
+        CartItem item = cartItemRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Cart not found"));
+
+        if (!item.getUser().getUserId().equals(user.getUserId())) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+        cartItemRepository.delete(item);
+    }
+
+    public void clearCart(User user) {
+        cartItemRepository.deleteByUser(user);
     }
 }
