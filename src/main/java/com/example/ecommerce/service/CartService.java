@@ -8,6 +8,7 @@ import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.repository.CartItemRepository;
 import com.example.ecommerce.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -93,7 +94,9 @@ public class CartService {
         cartItemRepository.delete(item);
     }
 
+    @Transactional
     public void clearCart(User user) {
-        cartItemRepository.deleteByUser(user);
+        List<CartItem> items = cartItemRepository.findByUser(user);
+        cartItemRepository.deleteAll(items);
     }
 }

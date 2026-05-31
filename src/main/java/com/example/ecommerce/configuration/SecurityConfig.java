@@ -33,6 +33,11 @@ public class SecurityConfig {
                                 "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/products")
                         .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH,
+                                "/orders/*/status")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/orders/admin")
+                        .hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex

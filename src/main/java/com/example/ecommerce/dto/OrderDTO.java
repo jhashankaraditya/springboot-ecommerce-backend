@@ -1,5 +1,6 @@
 package com.example.ecommerce.dto;
 
+import com.example.ecommerce.model.OrderStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ public class OrderDTO {
 
     private double totalAmount;
 
-    private String status;
+    private OrderStatus status;
 
     private LocalDateTime createdAt;
 

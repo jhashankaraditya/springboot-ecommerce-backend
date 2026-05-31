@@ -1,13 +1,11 @@
 package com.example.ecommerce.controller;
 
 import com.example.ecommerce.dto.OrderDTO;
+import com.example.ecommerce.dto.UpdateOrderStatusRequestDTO;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.service.OrderService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +25,28 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<OrderDTO> getOrder(@AuthenticationPrincipal User user) {
+    public List<OrderDTO> getMyOrders(@AuthenticationPrincipal User user) {
         return orderService.getMyOrders(user);
+    }
+
+    @GetMapping("/{id}")
+    public OrderDTO getOrderById(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        return orderService.getOrderById(id,user);
+    }
+
+    @PatchMapping("/{id}/status")
+    public OrderDTO updateOrderStatus(@PathVariable Long id, @RequestBody UpdateOrderStatusRequestDTO
+                                      updateOrderStatusRequestDTO) {
+        return orderService.updateOrderStatus(id,updateOrderStatusRequestDTO.getStatus());
+    }
+
+    @GetMapping("/admin")
+    public List<OrderDTO> getAllOrders() {
+        return orderService.getAllOrders();
+    }
+
+    @PatchMapping("/{id}/cancel")
+    public OrderDTO cancelOrder(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        return orderService.cancelOrder(id,user);
     }
 }

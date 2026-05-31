@@ -2,12 +2,10 @@ package com.example.ecommerce.service;
 
 import com.example.ecommerce.dto.OrderDTO;
 import com.example.ecommerce.dto.OrderItemDTO;
-import com.example.ecommerce.model.CartItem;
-import com.example.ecommerce.model.Order;
-import com.example.ecommerce.model.OrderItem;
-import com.example.ecommerce.model.User;
+import com.example.ecommerce.exception.BadRequestException;
+import com.example.ecommerce.exception.ResourceNotFoundException;
+import com.example.ecommerce.model.*;
 import com.example.ecommerce.repository.CartItemRepository;
-import com.example.ecommerce.repository.OrderItemRepository;
 import com.example.ecommerce.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +28,12 @@ public class OrderService {
         List<CartItem> cartItems = cartItemRepository.findByUser(user);
 
         if (cartItems.isEmpty()) {
-            throw new RuntimeException("Cart is empty!");
+            throw new BadRequestException("Cart is empty!");
         }
 
         Order order = new Order();
         order.setUser(user);
-        order.setStatus("PLACED");
+        order.setStatus(OrderStatus.PLACED);
         order.setCreatedAt(LocalDateTime.now());
 
         double totalAmount = 0;
@@ -97,17 +95,68 @@ public class OrderService {
         List<OrderDTO> orderDTOList = new ArrayList<>();
 
         for (Order order:orders) {
-            OrderDTO orderDTO = new OrderDTO();
-
-            orderDTO.setOrderId(order.getId());
-            orderDTO.setStatus(order.getStatus());
-            orderDTO.setOrderItems(order.getOrderItems().stream().map(this::toOrderItemDTO).toList());
-            orderDTO.setCreatedAt(order.getCreatedAt());
-            orderDTO.setTotalAmount(order.getTotalAmount());
+            OrderDTO orderDTO = toDTO(order);
 
             orderDTOList.add(orderDTO);
         }
 
         return orderDTOList;
+    }
+
+    public OrderDTO getOrderById(Long id, User user) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "Order not found"
+        ));
+
+        User orderUser = order.getUser();
+
+        boolean isOwner = orderUser.getUserId().equals(user.getUserId());
+        boolean isAdmin = user.getRole().equals("ROLE_ADMIN");
+
+        if (!isOwner && !isAdmin) {
+            throw new BadRequestException(
+                    "You cannot view this order"
+            );
+        }
+
+        return toDTO(order);
+    }
+
+    public OrderDTO updateOrderStatus(Long id, OrderStatus orderStatus) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "Order not found!"
+        ));
+
+        order.setStatus(orderStatus);
+
+        Order savedOrder = orderRepository.save(order);
+        return toDTO(savedOrder);
+    }
+
+    public List<OrderDTO> getAllOrders() {
+        return orderRepository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+    public OrderDTO cancelOrder(Long id, User user) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "Order not found!"
+        ));
+
+        boolean isOwner = order.getUser().getUserId().equals(user.getUserId());
+
+        if (!isOwner) {
+            throw new BadRequestException("You cannot cancel this order.");
+        }
+
+        if (order.getStatus().equals(OrderStatus.DELIVERED)) {
+            throw new BadRequestException("Delivered order cannot be cancelled");
+        }
+
+        order.setStatus(OrderStatus.CANCELLED);
+
+        return toDTO(orderRepository.save(order));
     }
 }
