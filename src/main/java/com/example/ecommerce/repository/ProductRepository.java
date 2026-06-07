@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductRepository extends JpaRepository<Product,Integer> {
+public interface ProductRepository extends JpaRepository<Product,Long> {
     Page<Product> findByCategory_Name(String categoryName, Pageable pageable);
 
 //    List<Product> findByCategory_Name(String categoryName);
@@ -24,4 +24,6 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
     Page<Product> findByCategoryNameAndPriceLessThanEqual(String category, Double maxPrice,
                                                           Pageable pageable);
+
+    Page<Product> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
 }

@@ -7,6 +7,7 @@ import com.example.ecommerce.repository.CategoryRepository;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,17 +60,20 @@ public class ProductController {
                                            @RequestParam(defaultValue = "id") String sortBy,
                                            @RequestParam(required = false) String category,
                                            @RequestParam(required = false) Double minPrice,
-                                           @RequestParam(required = false) Double maxPrice) {
-        return productService.getProducts(page,size,sortBy,category,minPrice,maxPrice);
+                                           @RequestParam(required = false) Double maxPrice,
+                                           @RequestParam(required = false) String keyword) {
+        return productService.getProducts(page,size,sortBy,category,minPrice,maxPrice,keyword);
     }
 
     @PutMapping("/{id}")
-    public ProductDTO updateProduct(@PathVariable int id, @Valid @RequestBody ProductRequestDTO dto) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ProductDTO updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequestDTO dto) {
         return productService.updateProduct(id,dto);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProduct(@PathVariable int id) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteProduct(@PathVariable Long id) {
         return productService.deleteProduct(id);
     }
 

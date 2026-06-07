@@ -91,7 +91,7 @@ public class ProductService {
 //    }
 
     public ProductPageResponse getProducts(int page, int size, String sortBy, String category,
-                                           Double minPrice, Double maxPrice) {
+                                           Double minPrice, Double maxPrice, String keyword) {
         List<String> allowedSortFields = List.of("id", "name", "price");
 
         Sort sort;
@@ -106,7 +106,10 @@ public class ProductService {
 
         Page<Product> productPage;
 
-        if (category!=null && minPrice!=null && maxPrice!=null) {
+        if (keyword!=null && !keyword.isBlank()) {
+            productPage = productRepository.findByNameContainingIgnoreCase(keyword,pageable);
+        }
+        else if (category!=null && minPrice!=null && maxPrice!=null) {
             productPage = productRepository.findByCategory_NameAndPriceBetween(category, minPrice,
                     maxPrice, pageable);
         }
@@ -148,7 +151,7 @@ public class ProductService {
         return response;
     }
 
-    public ProductDTO updateProduct(int id, ProductRequestDTO dto) {
+    public ProductDTO updateProduct(Long id, ProductRequestDTO dto) {
         Product product = productRepository.findById(id).orElseThrow(() -> new
                 ResourceNotFoundException("Product not found"));
 
@@ -167,7 +170,7 @@ public class ProductService {
 
     }
 
-    public String deleteProduct(int id) {
+    public String deleteProduct(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
                 "Product not found"));
 
