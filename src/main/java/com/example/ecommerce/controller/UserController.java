@@ -3,6 +3,8 @@ package com.example.ecommerce.controller;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.repository.UserRepository;
 import com.example.ecommerce.service.JwtService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Authentication")
 @RestController
 @RequestMapping("/auth")
 public class UserController {
@@ -28,6 +31,7 @@ public class UserController {
         this.jwtService = jwtService;
     }
 
+    @Operation(summary = "Register new user")
     @PostMapping("/signup")
     public String signup(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -35,6 +39,7 @@ public class UserController {
         return "User registered!";
     }
 
+    @Operation(summary = "Login and get JWT token")
     @PostMapping("/login")
     public String login(@RequestBody User user) {
 

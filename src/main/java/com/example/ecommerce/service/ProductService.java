@@ -6,8 +6,10 @@ import com.example.ecommerce.dto.ProductRequestDTO;
 import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.model.Category;
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.Review;
 import com.example.ecommerce.repository.CategoryRepository;
 import com.example.ecommerce.repository.ProductRepository;
+import com.example.ecommerce.repository.ReviewRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -21,10 +23,13 @@ public class ProductService {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final ReviewRepository reviewRepository;
 
-    public ProductService(CategoryRepository categoryRepository, ProductRepository productRepository) {
+    public ProductService(CategoryRepository categoryRepository, ProductRepository productRepository,
+                          ReviewRepository reviewRepository) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     public ProductDTO convertToDTO(Product product) {
@@ -42,6 +47,15 @@ public class ProductService {
         else {
             productDTO.setCategoryName("No category");
         }
+
+        List<Review> reviews = reviewRepository.findByProduct(product);
+        int reviewCount = reviews.size();
+        productDTO.setReviewCount(reviewCount);
+
+        Double averageRating = reviews.stream().mapToInt(Review::getRating).average().orElse(0.0);
+
+        averageRating=Math.round(averageRating * 10.0)/10.0;
+        productDTO.setAverageRating(averageRating);
 
         return productDTO;
     }

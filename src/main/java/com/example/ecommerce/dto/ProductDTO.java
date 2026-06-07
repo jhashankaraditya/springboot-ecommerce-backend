@@ -10,4 +10,6 @@ public class ProductDTO {
     private double price;
     private String imageUrl;
     private String categoryName;
+    private Double averageRating;
+    private Integer reviewCount;
 }

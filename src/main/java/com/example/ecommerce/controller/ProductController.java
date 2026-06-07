@@ -6,6 +6,8 @@ import com.example.ecommerce.dto.ProductRequestDTO;
 import com.example.ecommerce.repository.CategoryRepository;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
+@Tag(name = "Products")
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -37,6 +40,7 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @Operation(summary = "Create product")
     @PostMapping
     public ProductDTO createProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -54,6 +58,7 @@ public class ProductController {
 //        return productService.getProducts(page,size,sortBy);
 //    }
 
+    @Operation(summary = "Get all products")
     @GetMapping
     public ProductPageResponse getProducts(@RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "5") int size,
@@ -65,18 +70,21 @@ public class ProductController {
         return productService.getProducts(page,size,sortBy,category,minPrice,maxPrice,keyword);
     }
 
+    @Operation(summary = "Update product")
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ProductDTO updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequestDTO dto) {
         return productService.updateProduct(id,dto);
     }
 
+    @Operation(summary = "Delete product")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String deleteProduct(@PathVariable Long id) {
         return productService.deleteProduct(id);
     }
 
+    @Operation(summary = "Get products by category")
     @GetMapping("/category/{name}")
     public List<ProductDTO> getProductsByCategory(@Valid @PathVariable String name) {
         return productService.getProductsByCategory(name);

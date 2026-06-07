@@ -151,8 +151,9 @@ public class OrderService {
             throw new BadRequestException("You cannot cancel this order.");
         }
 
-        if (order.getStatus().equals(OrderStatus.DELIVERED)) {
-            throw new BadRequestException("Delivered order cannot be cancelled");
+        if (order.getStatus() == OrderStatus.SHIPPED || order.getStatus() == OrderStatus.DELIVERED ||
+                order.getStatus() == OrderStatus.CANCELLED) {
+            throw new BadRequestException("Order cannot be cancelled");
         }
 
         order.setStatus(OrderStatus.CANCELLED);
