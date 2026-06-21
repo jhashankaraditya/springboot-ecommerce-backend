@@ -72,22 +72,22 @@ public class OrderServiceTest {
     void shouldThrowExceptionWhenUserDoesNotOwnOrder() {
         User correctOwner = new User();
         correctOwner.setUserId(1L);
-        correctOwner.setUsername("aditya");
 
         User wrongUser = new User();
         wrongUser.setUserId(2L);
-        wrongUser.setUsername("ravi");
 
         Order order = new Order();
         order.setId(1L);
         order.setUser(correctOwner);
         order.setStatus(OrderStatus.PLACED);
-        order.setOrderItems(List.of());
 
         when(orderRepository.findById(1L))
                 .thenReturn(Optional.of(order));
 
-        assertThrows(BadRequestException.class,()->orderService.cancelOrder(2L,wrongUser));
+        assertThrows(
+                BadRequestException.class,
+                () -> orderService.cancelOrder(1L, wrongUser)
+        );
     }
 
     @Test
