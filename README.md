@@ -1,25 +1,27 @@
-Spring Boot E-Commerce Backend (Production-Ready REST API)
+🛒 Spring Boot E-Commerce Backend (Production-Ready REST API)
 
-A production-ready backend E-Commerce system built using Java, Spring Boot, Spring Security, JWT, JPA/Hibernate, PostgreSQL, Docker, and Swagger/OpenAPI. The project is fully deployed and exposes REST APIs for authentication, product management, cart, orders, reviews, and categories.
+A production-grade backend system for an E-Commerce platform built using Java, Spring Boot, Spring Security, JWT, JPA/Hibernate, PostgreSQL, Docker, and Swagger/OpenAPI.
+
+The system exposes fully documented REST APIs for authentication, products, cart, orders, reviews, and categories, and is deployed in a production environment.
 
 🚀 Live Deployment
-Backend API: https://springboot-ecommerce-backend-rdj2.onrender.com
-Swagger UI: https://springboot-ecommerce-backend-rdj2.onrender.com/swagger-ui/index.html
-OpenAPI Docs: /v3/api-docs
+🔗 Backend API: https://springboot-ecommerce-backend-rdj2.onrender.com
+📘 Swagger UI: https://springboot-ecommerce-backend-rdj2.onrender.com/swagger-ui/index.html
+📄 OpenAPI Docs: /v3/api-docs
 ✨ Features
 🔐 Authentication & Authorization
-User Registration & Login
+User registration & login
 JWT-based authentication
 Role-based access control (USER / ADMIN)
-Protected REST endpoints
+Secure protected endpoints using Spring Security
 📦 Product Management
-Create / Update / Delete products (Admin)
-Fetch products by category
-Product listing APIs
+Create / update / delete products (Admin only)
+Fetch all products
+Filter products by category
 🛒 Cart System
 Add items to cart
-Update quantity
-Remove items
+Update item quantity
+Remove items from cart
 View user cart
 Clear cart
 📑 Order Management
@@ -30,36 +32,40 @@ Admin: update order status
 Admin: view all orders
 ⭐ Reviews System
 Add product reviews
-View product reviews
+View reviews for products
 🗂 Category Management
-Create and manage product categories
+Create categories
+View all categories
 🧰 Tech Stack
 Java 21
 Spring Boot
 Spring Security
 JWT
-Hibernate / JPA
+JPA / Hibernate
 PostgreSQL
 Docker
 Swagger / OpenAPI
-JUnit 5, Mockito
+Maven
+JUnit 5
+Mockito
 🧪 Testing
-Unit tests using JUnit & Mockito
-Service-layer business logic coverage:
-Order placement
+Unit testing using JUnit 5 & Mockito
+Covered service-layer business logic:
+Order processing
 Cart operations
 Authentication flow
+Exception handling
 ☁️ Deployment
-Dockerized backend
+Dockerized Spring Boot application
 Deployed on Render
 PostgreSQL database integration
-Production-ready REST APIs
+Production-ready REST API setup
 📌 Future Improvements
-CI/CD pipeline (GitHub Actions)
-Redis caching
+CI/CD pipeline using GitHub Actions
+Redis caching layer
 Payment gateway integration
-Frontend (React)
-Load testing + scalability improvements
+React frontend (optional UI layer)
+Load testing & scalability improvements
 👨‍💻 Author
 
 Aditya Shankar Jha
