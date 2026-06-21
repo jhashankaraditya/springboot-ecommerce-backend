@@ -34,6 +34,7 @@ public class UserController {
     @Operation(summary = "Register new user")
     @PostMapping("/signup")
     public String signup(@RequestBody User user) {
+        System.out.println("SIGNUP ENDPOINT HIT");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return "User registered!";
