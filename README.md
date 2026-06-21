@@ -1,105 +1,65 @@
-# Spring Boot E-Commerce Backend
+Spring Boot E-Commerce Backend (Production-Ready REST API)
 
-A backend-only E-Commerce application built using Java, Spring Boot, Spring Security, JWT Authentication, JPA/Hibernate, MySQL, Swagger/OpenAPI, and JUnit/Mockito.
+A production-ready backend E-Commerce system built using Java, Spring Boot, Spring Security, JWT, JPA/Hibernate, PostgreSQL, Docker, and Swagger/OpenAPI. The project is fully deployed and exposes REST APIs for authentication, product management, cart, orders, reviews, and categories.
 
-## Features
-
-### Authentication & Authorization
-
-* User Registration
-* User Login
-* JWT Authentication
-* Role-Based Access Control
-* Protected APIs
-
-### Category Management
-
-* Create Category
-* Update Category
-* Delete Category
-* View Categories
-
-### Product Management
-
-* Create Product
-* Update Product
-* Delete Product
-* View Products
-
-### Cart Management
-
-* Add Product to Cart
-* Update Quantity
-* Remove Product from Cart
-* View Cart
-
-### Order Management
-
-* Place Order
-* View My Orders
-* View Order by ID
-* Cancel Order
-* Update Order Status
-* View All Orders (Admin)
-
-## Tech Stack
-
-* Java 21
-* Spring Boot
-* Spring Security
-* JWT
-* Hibernate / JPA
-* MySQL
-* Swagger / OpenAPI
-* Maven
-* JUnit 5
-* Mockito
-
-## API Documentation
-
-Swagger UI:
-
-```text
-http://localhost:8080/swagger-ui/index.html
-```
-
-## Project Structure
-
-src/main/java
-
-* controller
-* service
-* repository
-* dto
-* model
-* security
-* exception
-* config
-
-## Testing
-
-Unit testing implemented using:
-
-* JUnit 5
-* Mockito
-
-Tested service-layer business logic including:
-
-* Order placement
-* Order cancellation
-* Ownership validation
-* Exception handling
-* Repository failure scenarios
-
-## Future Enhancements
-
-* Docker
-* CI/CD Pipeline
-* Redis Caching
-* Payment Gateway Integration
-* Frontend Application
-* Cloud Deployment
-
-## Author
+🚀 Live Deployment
+Backend API: https://springboot-ecommerce-backend-rdj2.onrender.com
+Swagger UI: https://springboot-ecommerce-backend-rdj2.onrender.com/swagger-ui/index.html
+OpenAPI Docs: /v3/api-docs
+✨ Features
+🔐 Authentication & Authorization
+User Registration & Login
+JWT-based authentication
+Role-based access control (USER / ADMIN)
+Protected REST endpoints
+📦 Product Management
+Create / Update / Delete products (Admin)
+Fetch products by category
+Product listing APIs
+🛒 Cart System
+Add items to cart
+Update quantity
+Remove items
+View user cart
+Clear cart
+📑 Order Management
+Place order from cart
+View user orders
+Cancel order
+Admin: update order status
+Admin: view all orders
+⭐ Reviews System
+Add product reviews
+View product reviews
+🗂 Category Management
+Create and manage product categories
+🧰 Tech Stack
+Java 21
+Spring Boot
+Spring Security
+JWT
+Hibernate / JPA
+PostgreSQL
+Docker
+Swagger / OpenAPI
+JUnit 5, Mockito
+🧪 Testing
+Unit tests using JUnit & Mockito
+Service-layer business logic coverage:
+Order placement
+Cart operations
+Authentication flow
+☁️ Deployment
+Dockerized backend
+Deployed on Render
+PostgreSQL database integration
+Production-ready REST APIs
+📌 Future Improvements
+CI/CD pipeline (GitHub Actions)
+Redis caching
+Payment gateway integration
+Frontend (React)
+Load testing + scalability improvements
+👨‍💻 Author
 
 Aditya Shankar Jha
